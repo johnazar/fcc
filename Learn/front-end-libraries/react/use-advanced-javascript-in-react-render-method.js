@@ -49,7 +49,7 @@ const inputStyle = {
         'Outlook not so good',
         'Very doubtful'
       ];
-      const answer = possibleAnswers; // Change this line
+      const answer = possibleAnswers[this.state.randomIndex]; // Change this line
       return (
         <div>
           <input
@@ -64,7 +64,7 @@ const inputStyle = {
           <h3>Answer:</h3>
           <p>
             {/* Change code below this line */}
-            {answer[this.state.randomIndex]}
+            {answer}
             {/* Change code above this line */}
           </p>
         </div>
