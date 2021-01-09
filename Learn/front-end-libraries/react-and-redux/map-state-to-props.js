@@ -9,7 +9,7 @@ const addMessage = (message) => {
   
   function mapDispatchToProps(dispatch){
     return {
-      submitNewMessage :function(message) {
+      submitNewMessage :message=> {
       dispatch(addMessage(message));
     }
     }
