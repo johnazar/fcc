@@ -25,7 +25,6 @@ class App extends React.Component {
       });
       //console.log(this.state.quote);
     }
-
   render() {
       const {content, author} = this.state;
     return (
@@ -35,14 +34,15 @@ class App extends React.Component {
             <span id="author">{author}</span>
         </div>
         <hr/>
-        <div>
-          <a class="button" id="tweet-quote" title="Tweet this quote!" target="_top" 
-          href={'https://twitter.com/intent/tweet?url=https://twitter.com?text=' + content}>
-              <i class="fa fa-twitter"></i>Tweet</a>
+        <div className="buttons" >
+          <a id="tweet-quote" title="Tweet this quote!" target="_top" href={'https://twitter.com/intent/tweet?url=https://twitter.com?text=' + content}>
+              <i className="fa fa-twitter"></i>Tweet</a>
           <button id="new-quote" onClick={this.fetchcontent}>Get quote</button>
         </div>
       </div>
     );
   }
 }
-ReactDOM.render(<App />, document.getElementById('app'))
+
+const domContainer = document.getElementById('app');
+ReactDOM.render(<App />, domContainer);
