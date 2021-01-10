@@ -1,0 +1,33 @@
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgb(119, 177, 169);
+}
+#app{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#quote-box{
+    border-radius: 3px;
+  position: relative;
+  width: 450px;
+  padding:50px;
+  display: table;
+  background-color: #fff;
+}
+.buttons{
+ display: flex;
+justify-content: space-between;
+}
+#new-quote{
+    display: inline-block;
+  text-align: center;
+  align-items: flex-end;
+}
+.footer{
+    display: flex;
+  align-items: center;  
+}
