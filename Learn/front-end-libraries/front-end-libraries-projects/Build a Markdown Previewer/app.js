@@ -1,3 +1,7 @@
+marked.setOptions({
+  breaks: true
+});
+
 class App extends React.Component {
     constructor(props) {
     super(props);
@@ -78,6 +82,5 @@ And here. | Okay. | I think we get it.
 ![React Logo w/ Text](https://goo.gl/Umyytc)
 `;
 
-
-
-ReactDOM.render(<App />, document.getElementById('app'));
+const domContainer = document.getElementById('app');
+ReactDOM.render(<App />, domContainer);
