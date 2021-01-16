@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstarp -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Build a Drum Machine</title>
+</head>
+<body>
+    <div class="container" id="drum-machine">
+    
+    <div class="row">
+      <div data-key="81" id="Q" class="btn key drum-pad">Q<audio class="clip" id="Q" data-key="81" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"></audio> </div>
+      <div data-key="87" id="W" class="btn key drum-pad">W<audio class="clip" id="W" data-key="87" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"></audio></div>
+      <div data-key="69" id="E" class="btn key drum-pad">E<audio class="clip" id="E" data-key="69" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"></audio></div>
+    </div>
+    <div class="row">
+      <div data-key="65" id="A" class="btn key drum-pad">A<audio class="clip" id="A" data-key="65" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"></audio></div>
+      <div data-key="83" id="S" class="btn key drum-pad">S<audio class="clip" id="S" data-key="83" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"></audio></div>
+      <div data-key="68" id="D" class="btn key drum-pad">D<audio class="clip" id="D" data-key="68" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"></audio></div>
+    </div>
+      <div class="row">
+      <div data-key="90" id="Z" class="btn key drum-pad">Z<audio class="clip" id="Z" data-key="90" src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3"></audio></div>
+      <div data-key="88" id="X" class="btn key drum-pad">X<audio class="clip" id="X" data-key="88" src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"></audio></div>
+      <div data-key="67" id="C" class="btn key drum-pad">C<audio class="clip" id="C" data-key="67" src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"></audio></div>
+    </div>
+    </div>
+    <div id="display">TEXT</div>
+
+    
+    <script>
+      
+        function playSound(e) {
+          console.log(e.keyCode);
+          console.log(e.target.id);
+          const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+          const audioid = document.querySelector(`audio[id="${e.target.id}"]`);
+          const disp = document.getElementById('display');
+          disp.innerHTML = e.target.id ||e.keyCode ;
+          console.log(audioid);
+          
+    
+          
+          if(audio){
+            audio.currentTime = 0; // rewind to start
+          audio.play();
+
+          }else if(audioid){
+            audioid.currentTime = 0; // rewind to start
+          audioid.play();
+          }else{
+            return;
+          }
+          
+         
+
+
+        }
+        
+      
+        
+        window.addEventListener('keydown', playSound); // add event listener on page
+        window.addEventListener('click', playSound); // add event listener on page
+      </script>
+    
+    
+    
+    
+    
+    
+    
+
+    <!-- Load our React component. -->
+<script  type="text/jsx" src="app.js"></script>
+<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</body>
+</html>
