@@ -1,16 +1,17 @@
-const API = 'https://jsonplaceholder.typicode.com/todos/1';
-const API2 ='https://api.quotable.io/random';
+const SessionON = 'SessionON';
+const BreakON ='BreakON';
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      intervalId: '',
-      isOn:false,
-      breaklength:300,
-      breakleft:300,
-      sessionlength: 1500,
-      sessionleft:1500,
-      timeleft:1500
+      intervalId: '',  // the counter
+      isOn:false, // Start stop counter , disable all buttons
+      typeON:SessionON, // what is running
+      breaklength:300,  // break length
+      breakleft:300,  // break left
+      sessionlength: 1500,  //
+      sessionleft:1500, //
+      timeleft:1500 // for display
     };
     this.breakhandler = this.breakhandler.bind(this);
     this.sessionhandler = this.sessionhandler.bind(this);
@@ -20,6 +21,10 @@ class App extends React.Component {
   }
   componentDidMount() {
     
+  }
+  componentDidUpdate() {
+    console.table(this.state);
+
   }
   startstop(){
     let {isOn} =this.state;
@@ -40,81 +45,101 @@ class App extends React.Component {
 
     }
     
-    
+    console.table(this.state); 
   }
+
   breakhandler(e){
-    const {breaklength,breakleft} = this.state;
     const {id} = e.target;
     switch(id){
       case 'break-decrement':{
         this.setState({
-          breaklength: breaklength - 60
+          breaklength: this.state.breaklength - 60,
+          timeleft: this.state.breaklength - 60
         });
 
         break;
       }
       case 'break-increment':{
         this.setState({
-          breaklength: breaklength + 60
+          breaklength: this.state.breaklength + 60,
+          timeleft: this.state.breaklength + 60
         });
 
         break;
       }
       default:
         break;
-
     }
-
-    this.setState({
-      breakleft:breaklength,
-      timeleft: breakleft
-    });
+    console.table(this.state);
   }
 
   sessionhandler(e){
-    const {timeleft,sessionlength} = this.state;
     const {id} = e.target;
     switch(id){
       case 'session-decrement':{
         this.setState({
-          sessionlength: sessionlength - 60,
-          timeleft: this.state.sessionlength -60
+          sessionlength: this.state.sessionlength - 60,
+          timeleft: this.state.sessionlength - 60
         });
 
         break;
       }
       case 'session-increment':{
         this.setState({
-          sessionlength: sessionlength + 60,
+          sessionlength: this.state.sessionlength + 60,
           timeleft: this.state.sessionlength + 60
         });
         break;
       }
     }
 
+    console.table(this.state);
   }
   reset(){
     clearInterval(this.state.intervalId);
     this.setState({
       isOn:false,
       intervalId: undefined,
+      typeON:SessionON,
       breaklength:300,
       sessionlength: 1500,
-      timeleft:1500
+      timeleft:5
     });
 
   }
 
   countDown(){
+    const {typeON} = this.state;
+
     this.setState({
       timeleft:this.state.timeleft - 1
     });
-    if(this.state.timeleft < 0) { 
-      clearInterval(this.state.intervalId);
+    if(this.state.timeleft < 0 ) {
+      switch (typeON) {
+        case SessionON:
+          this.setState({
+            typeON:BreakON,
+            timeleft:this.state.breaklength
+          });
+          
+          break;
+        
+        case BreakON:
+          this.setState({
+            typeON:SessionON,
+            timeleft:this.state.sessionlength
+          });
+          
+          break;
+        
+        default:
+          console.table('default');
+      }
+      //clearInterval(this.state.intervalId);
     }
 
-    console.log(this.state.intervalId);
-    console.log('countDown');
+    console.table(this.state);
+    
   }
 
 
