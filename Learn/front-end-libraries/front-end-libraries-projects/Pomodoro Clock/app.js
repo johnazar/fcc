@@ -1,5 +1,6 @@
-const SessionON = 'SessionON';
-const BreakON ='BreakON';
+const SessionON = 'Session';
+const BreakON ='Break';
+const audiouri = 'https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -23,13 +24,15 @@ class App extends React.Component {
     
   }
   componentDidUpdate() {
+    console.log('componentDidUpdate');
     console.table(this.state);
-
+    
+    
   }
   startstop(){
     let {isOn} =this.state;
     if(!isOn){
-      let intervalId = setInterval(this.countDown, 1000);
+      let intervalId = setInterval(this.countDown, 1000); // run a counter on 1 sec interval 
       this.setState({
         intervalId: intervalId,
         isOn:true
@@ -45,24 +48,31 @@ class App extends React.Component {
 
     }
     
-    console.table(this.state); 
+    
   }
 
   breakhandler(e){
+    
+    
+
     const {id} = e.target;
+
+    console.table(this.state);
+    
     switch(id){
       case 'break-decrement':{
+        let Bmin= Math.max(parseInt(this.state.breaklength - 60), 60);
         this.setState({
-          breaklength: this.state.breaklength - 60,
-          timeleft: this.state.breaklength - 60
+          breaklength: Bmin,
+          timeleft: Bmin
         });
-
         break;
       }
       case 'break-increment':{
+        let Bmax= Math.min(parseInt(this.state.breaklength + 60),3600);
         this.setState({
-          breaklength: this.state.breaklength + 60,
-          timeleft: this.state.breaklength + 60
+          breaklength: Bmax,
+          timeleft: Bmax
         });
 
         break;
@@ -70,30 +80,32 @@ class App extends React.Component {
       default:
         break;
     }
-    console.table(this.state);
+    
   }
 
   sessionhandler(e){
     const {id} = e.target;
     switch(id){
       case 'session-decrement':{
+        let Smin= Math.max(parseInt(this.state.sessionlength - 60), 60);
         this.setState({
-          sessionlength: this.state.sessionlength - 60,
-          timeleft: this.state.sessionlength - 60
+          sessionlength: Smin,
+          timeleft: Smin
         });
 
         break;
       }
       case 'session-increment':{
+        let Smax= Math.min(parseInt(this.state.sessionlength + 60),3600);
         this.setState({
-          sessionlength: this.state.sessionlength + 60,
-          timeleft: this.state.sessionlength + 60
+          sessionlength: Smax,
+          timeleft: Smax
         });
         break;
       }
     }
 
-    console.table(this.state);
+    
   }
   reset(){
     clearInterval(this.state.intervalId);
@@ -102,19 +114,33 @@ class App extends React.Component {
       intervalId: undefined,
       typeON:SessionON,
       breaklength:300,
-      sessionlength: 1500,
-      timeleft:5
+      sessionlength:1500,
+      timeleft:1500
     });
+    const audio = document.getElementById('beep');
+    if(audio){
+      audio.pause();
+      audio.currentTime = 0; // rewind to start
+    }else{
+      return;
+    }
 
   }
 
   countDown(){
     const {typeON} = this.state;
+    const audio = document.getElementById('beep');
 
     this.setState({
       timeleft:this.state.timeleft - 1
     });
     if(this.state.timeleft < 0 ) {
+      if(audio){
+        audio.currentTime = 0; // rewind to start
+      audio.play();
+      }else{
+        return;
+      }
       switch (typeON) {
         case SessionON:
           this.setState({
@@ -133,7 +159,7 @@ class App extends React.Component {
           break;
         
         default:
-          console.table('default');
+          
       }
       //clearInterval(this.state.intervalId);
     }
@@ -144,7 +170,7 @@ class App extends React.Component {
 
 
   render() {
-      const {isOn,breaklength,sessionlength,timeleft} = this.state;
+      const {isOn,breaklength,sessionlength,timeleft,typeON} = this.state;
       let mm = Math.floor(timeleft/60)+"";
 
       if(mm.length<2){
@@ -154,6 +180,7 @@ class App extends React.Component {
       if(ss.length<2){
         ss="0"+ss;
       }
+      
       //console.log(ss);
 
     return (
@@ -180,7 +207,7 @@ class App extends React.Component {
         </div>
         <div className="row justify-content-md-center text-center">
           <div id="break" className="col col-sm-8">
-            <h2 id="timer-label">Session</h2>
+            <h2 id="timer-label">{typeON}</h2>
             <h1 id="time-left">{`${mm}:${ss}`}</h1>
             <a id="start_stop" className="btn btn-sm btn-outline-secondary" onClick={this.startstop} href="#" role="button">Start/Stop</a>
             <a id="reset" className="btn btn-sm btn-outline-secondary" onClick={this.reset} href="#" role="button">Reset</a>
@@ -189,6 +216,11 @@ class App extends React.Component {
           </div>
 
         </div>
+        <audio
+          id="beep"
+          preload="auto"
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+        />
 
       </div>
     );
