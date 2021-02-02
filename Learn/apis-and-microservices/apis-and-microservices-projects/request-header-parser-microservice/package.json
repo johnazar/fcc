@@ -1,5 +1,5 @@
 {
-  "name": "timestamp-microservice",
+  "name": "request_header",
   "version": "1.0.0",
   "description": "FreeCodeCamp project",
   "main": "index.js",
