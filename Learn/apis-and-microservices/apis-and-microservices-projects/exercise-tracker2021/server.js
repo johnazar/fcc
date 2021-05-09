@@ -60,7 +60,7 @@ app.post('/api/users', function (req, res) {
 app.get('/api/users', function(req, res) {
   
   User.find({}).select('username').exec(function(err, arr) {
-    if (err) throw err;
+    if (err) return res.json({msg: err.MongooseError });
     console.log(arr);
     res.json(arr);
   });
@@ -68,6 +68,52 @@ app.get('/api/users', function(req, res) {
 
 
 //You can POST to /api/users/:_id/exercises with form data description, duration, and optionally date. If no date is supplied, the current date will be used. The response returned will be the user object with the exercise fields added.
+app.post('/api/users/:_id/exercises', function (req, res) {
+  const _id =req.params._id;
+  const {description, duration, date } = req.body;
+  let result = {}
+  result['userId'] = _id;
+  result['description'] = description;
+  result['duration'] = duration;
+  result['date'] = date;
+  //res.json(req.body);
+
+  //Simple validation
+  //Date
+  let exerciseDate = new Date().toISOString().substring(0, 10);
+  if (date && date !== "") {
+    exerciseDate = new Date(date).toISOString().substring(0, 10);
+  }
+  //create exercise object
+  const exerciseObj = {
+    description: description,
+    duration: parseInt(duration),
+    date: exerciseDate
+  };
+  //let exercise = new ExerciseSession(exerciseObj);
+  //exercise.save();
+
+  User.findByIdAndUpdate( 
+    _id ,
+    {$push : {log: exerciseObj}}
+    ,
+    {new:true},
+    (err, userUpdated) => {
+    if (err) return res.json({msg: err.MongooseError });
+    //prepare responseObj
+    let responseObj={
+      _id : _id,
+      username: userUpdated.username,
+      date:new Date(exerciseDate).toDateString(),
+      duration: exerciseObj.duration,
+      description:description
+    };
+    res.json(responseObj);
+  }    
+  );
+});
+
+
 
 
 
