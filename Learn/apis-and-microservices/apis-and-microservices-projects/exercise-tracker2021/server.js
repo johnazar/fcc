@@ -136,7 +136,7 @@ app.get('/api/users/:_id/logs', function(req, res) {
         fromDate = fromDate.getTime()
         toDate = toDate.getTime()
         logdisplay= logdisplay.filter(element=>{
-          return fromDate<=element.date.getTime()<=toDate
+          return fromDate<=element.date.getTime()&&element.date.getTime()<=toDate
         })
       } 
       
