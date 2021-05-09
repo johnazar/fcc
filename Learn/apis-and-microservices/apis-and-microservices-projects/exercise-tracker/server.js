@@ -35,10 +35,26 @@ const User = mongoose.model("User", userSchema);
 
 
 
-app.use(cors())
+app.use(cors());
+app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
+});
+
+
+//POST Req
+//Get Data from POST Requests Create a New User
+app.post('/api/users', function (req, res) {
+  let result = {}
+  let newuser = new User({ username: req.body.username });
+  newuser.save((err, savedUser)=>{
+    if (err) console.log(err);
+      result['_id'] = savedUser._id;
+      result['username'] = savedUser.username;
+      res.json(result);
+  });
+  
 });
 
 
