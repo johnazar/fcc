@@ -119,11 +119,8 @@ app.post('/api/users/:_id/exercises', function (req, res) {
 app.get('/api/users/:_id/logs', function(req, res) {
   User.findById(req.params._id,(err,userFound)=>{
     if (!err) {
-
-      
       let logdisplay = userFound.log;
       //add interval
-      
        if(req.query.from||req.query.to){
         let fromDate = new Date(0)
         let toDate =new Date()
@@ -135,8 +132,9 @@ app.get('/api/users/:_id/logs', function(req, res) {
         }
         fromDate = fromDate.getTime()
         toDate = toDate.getTime()
-        logdisplay= logdisplay.filter(element=>{
-          return fromDate<=element.date.getTime()&&element.date.getTime()<=toDate
+        logdisplay= logdisplay.filter((element)=>{
+          let datetocompare = new Date(element.date).getTime()
+          return fromDate<=datetocompare & datetocompare<=toDate
         })
       } 
       
