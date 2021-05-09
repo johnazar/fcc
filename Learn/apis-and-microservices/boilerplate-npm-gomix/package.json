@@ -1,6 +1,6 @@
 {
 	"name": "fcc-learn-npm-package-json",
-	"author": "JohnAzar",
+	"author": "John Azar",
 	"description": "A project that does something awesome",
 	"keywords": [ "freecodecamp", "npm", "api" ],
 	"license": "MIT",
