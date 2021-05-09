@@ -114,7 +114,51 @@ app.post('/api/users/:_id/exercises', function (req, res) {
 });
 
 
+//You can make a GET request to /api/users/:_id/logs to retrieve a full exercise log of any user. The returned response will be the user object with a log array of all the exercises added. Each log item has the description, duration, and date properties.
 
+app.get('/api/users/:_id/logs', function(req, res) {
+  User.findById(req.params._id,(err,userFound)=>{
+    if (!err) {
+
+      
+      let logdisplay = userFound.log;
+      //add interval
+      
+       if(req.query.from||req.query.to){
+        let fromDate = new Date(0)
+        let toDate =new Date()
+        if(req.query.from){
+          fromDate = new Date(req.query.from)
+        }
+        if(req.query.to){
+          toDate = new Date(req.query.to)
+        }
+        fromDate = fromDate.getTime()
+        toDate = toDate.getTime()
+        logdisplay= logdisplay.filter(element=>{
+          return fromDate<=element.date.getTime()<=toDate
+        })
+      } 
+      
+      //add limits
+     if(req.query.limit)
+      {
+        logdisplay=logdisplay.slice(0,req.query.limit)
+      } 
+
+
+      let responseObj2=
+      {
+        _id : req.params._id,
+        username: userFound.username,
+        count:userFound.log.length,
+        log:logdisplay
+      }
+      res.json(responseObj2);
+    }
+  });
+
+});
 
 
 
