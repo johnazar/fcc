@@ -40,8 +40,8 @@ app.get('/', (req, res) => {
 });
 
 
-//POST Req
-//Get Data from POST Requests Create a New User
+//Tasks
+//You can POST to /api/users with form data username to create a new user. The returned response will be an object with username and _id properties.
 app.post('/api/users', function (req, res) {
   let result = {}
   let newuser = new User({ username: req.body.username });
@@ -53,6 +53,21 @@ app.post('/api/users', function (req, res) {
   });
   
 });
+
+
+//GET Req
+//You can make a GET request to /api/users to get an array of all users. Each element in the array is an object containing a user's username and _id.
+app.get('/api/users', function(req, res) {
+  
+  User.find({}).select('username').exec(function(err, arr) {
+    if (err) throw err;
+    console.log(arr);
+    res.json(arr);
+  });
+});
+
+
+//You can POST to /api/users/:_id/exercises with form data description, duration, and optionally date. If no date is supplied, the current date will be used. The response returned will be the user object with the exercise fields added.
 
 
 
