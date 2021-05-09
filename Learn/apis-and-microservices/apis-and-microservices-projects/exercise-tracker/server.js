@@ -6,21 +6,33 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
 
-// setup connection to db
+// Setup connection to db
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-const Schema = mongoose.Schema;
-const userSchema = new Schema({
-  name: { type: String, required: true },
-  exercise: { type: String },
-  duration: Number,
-  date: Date
-});
 
-//define schema
-const User = mongoose.model("User", userSchema);
 //test conection
 /* let joeDoe = new User({name: "Joe Doe 2", exercise: 'push ups', duration: 20,date:new Date("2020-02-02")});
 joeDoe.save(); */
+
+// Create Schema
+// we need a collection of exercises related to single user in users' collection
+const Schema = mongoose.Schema;
+let exerciseSchema = new Schema({
+  description: { type: String, required: true },
+  exercise: { type: String },
+  duration: Number,
+  date: String // date can be used
+});
+
+let userSchema = new Schema({
+  username: { type: String, required: true },
+  log:[exerciseSchema]
+});
+
+
+//define Schema
+let ExerciseSession = mongoose.model("Session", exerciseSchema);
+const User = mongoose.model("User", userSchema);
+
 
 
 app.use(cors())
