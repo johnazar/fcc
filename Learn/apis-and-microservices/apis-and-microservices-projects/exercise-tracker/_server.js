@@ -3,9 +3,9 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 
-//The code goes here
 // Setup connection to db
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -36,9 +36,47 @@ const User = mongoose.model("User", userSchema);
 
 
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
+});
+
+
+//The code goes here
+
+//POST Req
+//Get Data from POST Requests Create a New User
+app.post('/api/exercise/new-user', function (req, res) {
+  let result = {}
+  result['username'] = req.body.username;
+  let newuser = new User({ name: req.body.username });
+  newuser.save();
+  result['_id'] = newuser._id;
+  console.log(result);
+  res.json(result);
+});
+
+//Get Data from POST Requests Add exercises
+app.post('/api/exercise/add', function (req, res) {
+  let result = {}
+  result['userId'] = req.body.userId;
+  result['description'] = req.body.description;
+  result['duration'] = req.body.duration;
+  result['date'] = req.body.date;
+  res.json(result);
+});
+
+
+//GET Req
+//Get Data from get Requests
+app.get('/api/exercise/users', function(req, res) {
+  
+  User.find({}).select('name').exec(function(err, arr) {
+    if (err) throw err;
+    console.log(arr);
+    res.json(arr);
+  });
 });
 
 
